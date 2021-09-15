@@ -12,7 +12,7 @@ const TodoSchema= mongoose.Schema({
             type:Date,
             default:Date.now
         },
-        author:{
+        users:{
           type: Schema.Types.ObjectId,
           ref: "users",
         },
