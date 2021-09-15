@@ -44,7 +44,7 @@ router.post("/upload", (req,res) => {
     const file = new Todo({
         title:req.body.title,
         discription:req.body.discription,
-        author: req.body.user_id,
+        users: req.body.user_id,
         status:req.body.status 
        });
        file.save().then(()=>{
