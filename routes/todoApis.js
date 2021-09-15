@@ -6,7 +6,7 @@ const path = require('path');
 //GET ALL TODO LIST
 router.get('/get',async (req,res)=>{
     try{
-        const postList = await Todo.find();
+        const postList = await Todo.find().populate('users');
         res.status(200).json({ status: true,data:postList});
     }
    catch (err) {
