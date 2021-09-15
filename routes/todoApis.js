@@ -45,6 +45,7 @@ router.patch("/edit/:todoId", async (req, res) => {
     if (!data) return res.json({ status: false, message: "No todo found" });
 
     const udpateData = req.body;
+      console.log(updateDate);
     const changePost = await Todo.findOneAndUpdate(
       {
         _id: req.params.todoId,
