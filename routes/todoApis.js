@@ -38,6 +38,28 @@ router.post('/search',async (req,res)=>{
   }
 });
 
+router.patch("/:todoId", async (req, res) => {
+  console.log(req.params.todoId);
+  try {
+    const data = await Todo.findById(req.params.todoId);
+    if (!data) return res.json({ status: false, message: "No todo found" });
+
+    const udpateData = req.body;
+    const changePost = await Todo.findOneAndUpdate(
+      {
+        _id: req.params.todoId,
+      },
+      {
+        $set: udpateData,
+      },
+      { upsert: true }
+    );
+    res.json({ status: true, data: changePost });
+  } catch (err) {
+    res.json({ status: false, message: err });
+  }
+});
+
 //ADD TODO
 router.post("/upload", (req,res) => {
      try {   
