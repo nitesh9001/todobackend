@@ -38,7 +38,7 @@ router.post('/search',async (req,res)=>{
   }
 });
 
-router.patch("/:todoId", async (req, res) => {
+router.patch("/edit/:todoId", async (req, res) => {
   console.log(req.params.todoId);
   try {
     const data = await Todo.findById(req.params.todoId);
