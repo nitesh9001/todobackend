@@ -3,6 +3,56 @@ const router =express.Router();
 const Todo = require('../Models/todoModel');
 const path = require('path');
 
+var localVersion = true;
+
+//GET ALL TODO LIST
+router.get('/stream', async (req,res) =>{
+    try{
+      var  eventInterval;
+       Todo.watch().on("change",(change)=>{
+        console.log(change);
+        localVersion = false;
+       });
+      res.set({
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      "Connection": "keep-alive",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers":
+      "Origin, X-Requested-With, Content-Type, Accept",
+      })
+      eventInterval = setInterval(async () => {
+      const postList = await Todo.find().select("title users discription status").populate("users" ,"email name");
+      console.log("client connected to sse",postList.length);
+       const dataTosend ={
+        status:true,
+        data:postList
+       }
+       if(!localVersion){
+        res.status(200).write(`data: ${JSON.stringify(dataTosend)}\n\n`);
+       }
+       
+      }, 1000);
+       if(localVersion){
+        const postList = await Todo.find().select("title users discription status").populate("users" ,"email name");
+        console.log("client connected to sse",postList.length);
+        const dataTosend ={
+         status:true,
+         data:postList
+       }
+        res.status(200).write(`data: ${JSON.stringify(dataTosend)}\n\n`);
+       }
+       
+      //  req.on('close', (err) => {
+      //    clearInterval(eventInterval);
+      //  res.end();
+    // });
+}
+   catch (err) {
+    res.status(400).json({ status: false, message: err });
+  }
+});
+
 //GET ALL TODO LIST
 router.get('/get',async (req,res)=>{
     try{
