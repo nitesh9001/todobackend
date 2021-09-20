@@ -9,7 +9,7 @@ var localVersion = true;
 router.get('/stream', async (req,res) =>{
     try{
       var  eventInterval;
-       Todo.watch().on("change",(change)=>{
+//        Todo.watch().on("change",(change)=>{
 //         console.log(change);
 //         localVersion = false;
 //        });
