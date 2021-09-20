@@ -10,9 +10,9 @@ router.get('/stream', async (req,res) =>{
     try{
       var  eventInterval;
        Todo.watch().on("change",(change)=>{
-        console.log(change);
-        localVersion = false;
-       });
+//         console.log(change);
+//         localVersion = false;
+//        });
       res.set({
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",
@@ -28,20 +28,20 @@ router.get('/stream', async (req,res) =>{
         status:true,
         data:postList
        }
-       if(!localVersion){
+//        if(!localVersion){
         res.status(200).write(`data: ${JSON.stringify(dataTosend)}\n\n`);
-       }
+//        }
        
       }, 1000);
-       if(localVersion){
-        const postList = await Todo.find().select("title users discription status").populate("users" ,"email name");
-        console.log("client connected to sse",postList.length);
-        const dataTosend ={
-         status:true,
-         data:postList
-       }
-        res.status(200).write(`data: ${JSON.stringify(dataTosend)}\n\n`);
-       }
+//        if(localVersion){
+//         const postList = await Todo.find().select("title users discription status").populate("users" ,"email name");
+//         console.log("client connected to sse",postList.length);
+//         const dataTosend ={
+//          status:true,
+//          data:postList
+//        }
+//         res.status(200).write(`data: ${JSON.stringify(dataTosend)}\n\n`);
+//        }
        
       //  req.on('close', (err) => {
       //    clearInterval(eventInterval);
